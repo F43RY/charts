@@ -774,7 +774,7 @@ extraDeploy:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: {{ include "kafka.fullname" . }}-connect
+      name: {{ include "common.names.fullname" . }}-connect
       labels: {{- include "common.labels.standard" . | nindent 4 }}
         app.kubernetes.io/component: connector
     spec:
@@ -800,17 +800,17 @@ extraDeploy:
           volumes:
             - name: configuration
               configMap:
-                name: {{ include "kafka.fullname" . }}-connect
+                name: {{ include "common.names.fullname" . }}-connect
   - |
     apiVersion: v1
     kind: ConfigMap
     metadata:
-      name: {{ include "kafka.fullname" . }}-connect
+      name: {{ include "common.names.fullname" . }}-connect
       labels: {{- include "common.labels.standard" . | nindent 4 }}
         app.kubernetes.io/component: connector
     data:
       connect-standalone.properties: |-
-        bootstrap.servers = {{ include "kafka.fullname" . }}-0.{{ include "kafka.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.service.port }}
+        bootstrap.servers = {{ include "common.names.fullname" . }}-0.{{ include "common.names.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}:{{ .Values.service.port }}
         ...
       mongodb.properties: |-
         connection.uri=mongodb://root:password@mongodb-hostname:27017
@@ -819,7 +819,7 @@ extraDeploy:
     apiVersion: v1
     kind: Service
     metadata:
-      name: {{ include "kafka.fullname" . }}-connect
+      name: {{ include "common.names.fullname" . }}-connect
       labels: {{- include "common.labels.standard" . | nindent 4 }}
         app.kubernetes.io/component: connector
     spec:
